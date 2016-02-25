@@ -34,13 +34,17 @@ namespace GameControllerHack
         private int[] iSwingPendingNotes = new int[128];
         private int[] iSwingPendingMsec = new int[128];
         private int[] chordModeNotesI = new int[4];
+        private int[] chordModeNotesII = new int[4];
+        private int[] chordModeNotesIII = new int[4];
         private int[] chordModeNotesIV = new int[4];
         private int[] chordModeNotesV = new int[4];
-        private int[] chordModeNotesVI = new int[4]; 
+        private int[] chordModeNotesVI = new int[4];
+        private int[] chordModeNotesVII = new int[4]; 
         private int[] chordModeNotesActive = new int[4];
         private bool bOctaveLocked = false;
         private bool bTransportRunning = false;
-        private bool bInputQuantize = true;
+        private bool bInputQuantize = false;
+        private bool bAscending = true;
         private bool bPlayingTrip = false;
         private bool bSkipMode = false;
         private bool bDblSkipMode = false;
@@ -78,6 +82,7 @@ namespace GameControllerHack
         private int LastPitchValue = 0;
         private int LastModValue = 0;
         private int velocity = 127;
+        private bool[] bButtonIgnore = new bool[12];
         private bool[] bValidNotes = new bool[12];
         private bool[] bNotePlaying = new bool[128];
 
@@ -150,19 +155,24 @@ namespace GameControllerHack
             comboBox1.Text = "C";
 
             chordComboBox.Items.Add("I");
+            chordComboBox.Items.Add("II");
+            chordComboBox.Items.Add("III");
             chordComboBox.Items.Add("IV");
             chordComboBox.Items.Add("V");
             chordComboBox.Items.Add("VI");
+            chordComboBox.Items.Add("VII");
             chordComboBox.Text = "I";
 
             label5.Text = "";
             label7.Text = "";
 
             this.Text = "Lead Mode";
-            
+
+            RefreshChords();
+
             mmTimer.Mode = TimerMode.Periodic;
             mmTimer.Period = 10;
-            mmTimer.Resolution = 10000;
+            mmTimer.Resolution = 1;
             mmTimer.SynchronizingObject = this;
             mmTimer.Tick += new System.EventHandler(this.mmTimer_Tick);
         }
@@ -247,7 +257,7 @@ namespace GameControllerHack
             }
             catch
             {
-                if (MessageBox.Show("No game controller found. Please connect one and click \"Retry.\"", "Couldn't open controller!", 
+                if (MessageBox.Show("No game controller found. Please connect one and click \"Retry.\"", "Couldn't open controller!",
                     MessageBoxButtons.RetryCancel, MessageBoxIcon.Stop) == DialogResult.Retry)
                 {
                     SetController();
@@ -301,6 +311,7 @@ namespace GameControllerHack
 
         private void SetInput()
         {
+            mmTimer.Stop();
             //Set the input device and start listening for trigger CC data
             if (inDevice != null)
             {
@@ -318,7 +329,6 @@ namespace GameControllerHack
 
                 Close();
             }
-            inputComboBox1.Text = InputDevice.GetDeviceCapabilities(inDeviceID).name.ToString();
             inDevice.StartRecording();
             inDevice.SysRealtimeMessageReceived += delegate(object sender, SysRealtimeMessageEventArgs er)
             {
@@ -386,6 +396,15 @@ namespace GameControllerHack
                     }
                 }
             };
+            inputComboBox1.Text = InputDevice.GetDeviceCapabilities(inDeviceID).name.ToString();
+            mmTimer.Start();
+        }
+
+        private void inputComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Set input port to what the user chose
+            inDeviceID = inputComboBox1.SelectedIndex;
+            SetInput();
         }
 
         private bool Poll()
@@ -439,8 +458,11 @@ namespace GameControllerHack
                     {
                         for (int i = 0; i < 4; i++)
                         {
+                            if (iNotePlayed[i] != -1)
+                            {
                             StopNote(iNotePlayed[i], iOctavePlayed[i]);
                             iNotePlayed[i] = -1;
+                            }
                         }
                     }
                 }
@@ -455,8 +477,11 @@ namespace GameControllerHack
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            StopNote(iNotePlayed[i], iOctavePlayed[i]);
-                            iNotePlayed[i] = -1;
+                            if (iNotePlayed[i] != -1)
+                            {
+                                StopNote(iNotePlayed[i], iOctavePlayed[i]);
+                                iNotePlayed[i] = -1;
+                            }
                         }
                     }
                 }
@@ -470,9 +495,9 @@ namespace GameControllerHack
                 {
                     label5.Text = "";
                 }
-                //Play pending notes
-                if (msec16 <= sixteenthMsec / 2 || !bInputQuantize)
-                {
+                ////Play pending notes
+                //if (msec16 <= sixteenthMsec / 2 || !bInputQuantize)
+                //{
                     for (int i = 0; i < iPendingNotes.Length; i++)
                     {
                         if (iPendingNotes[i] != -1)
@@ -481,7 +506,7 @@ namespace GameControllerHack
                             iPendingNotes[i] = -1;
                         }
                     }
-                }
+                //}
 
                 for (int i = 0; i < iSwingPendingNotes.Length; i++)
                 {
@@ -629,19 +654,6 @@ namespace GameControllerHack
                     {
                         bDrumMode = false;
                         bChordMode = false;
-                        bScaleMode = false;
-                        bBassMode = false;
-                        bAdvancedMode = true;
-                        Octave = 3;
-                        channel = 0;
-                        textBox1.Visible = false;
-                        label7.Text = "";
-                        this.Text = "Advanced Mode";
-                    }
-                    else if (bAdvancedMode)
-                    {
-                        bDrumMode = false;
-                        bChordMode = false;
                         bScaleMode = true;
                         bBassMode = false;
                         bAdvancedMode = false;
@@ -650,7 +662,8 @@ namespace GameControllerHack
                         textBox1.Visible = false;
                         label7.Text = "";
                         this.Text = "Lead Mode";
-                    }    
+                    }
+
                 }
                 if ((buttons[8] == 0) && (iNotePlayed[8] != -1))
                 {
@@ -687,6 +700,7 @@ namespace GameControllerHack
                     bOctaveLocked = false;
                     bAutoOctaveDown = false;
                     bAutoOctaveUp = false;
+                    bChromaOverride = false;
                 }
                 if ((dpad[0] == 0) && (bOctaveLocked == false))
                 {
@@ -701,6 +715,7 @@ namespace GameControllerHack
                 }
                 if (dpad[0] == 9000)
                 {
+                    bChromaOverride = true;
                     if (bChordMode && !bOctaveLocked)
                     {
                         Invert(true);
@@ -716,6 +731,7 @@ namespace GameControllerHack
                 }
                 if (dpad[0] == 27000)
                 {
+                    bChromaOverride = true;
                     if (bChordMode && !bOctaveLocked)
                     {
                         Invert(false);
@@ -734,7 +750,8 @@ namespace GameControllerHack
                 {
                     int nValue = axis[3] / 4;
                     nValue = nValue / 128;
-                    ChannelMessage PitchMessage = new ChannelMessage(ChannelCommand.PitchWheel, 0, 0, nValue);
+                    int nValue2 = nValue % 128;
+                    ChannelMessage PitchMessage = new ChannelMessage(ChannelCommand.PitchWheel, 0, nValue2, nValue);
                     outDevice.Send(PitchMessage);
                     LastPitchValue = axis[3];
                 }
@@ -746,6 +763,15 @@ namespace GameControllerHack
                     ChannelMessage ModMessage = new ChannelMessage(ChannelCommand.Controller, 0, 1, nValue);
                     outDevice.Send(ModMessage);
                     LastModValue = axis[0];
+                }
+
+                if (axis[1] < 32767)
+                {
+                    bAscending = true;
+                }
+                else if (axis[1] > 32767)
+                {
+                    bAscending = false;
                 }
 
                 if (axis[2] < 32767)
@@ -775,14 +801,95 @@ namespace GameControllerHack
                     {
                         iNotePlayed[0] = 128;
                         StashCurrentChord();
-                        chordComboBox.Text = "VI";
+                        if (axis[2] < 32767)
+                        {
+                            chordComboBox.Text = "VII";
+                        }
+                        else
+                        {
+                            chordComboBox.Text = "VI";
+                        }
                         GetRecentChord();
                     }
-                    else if (bScaleMode)
-                    { 
-                        iNotePlayed[0] = 128;
-                        bChromaOverride = true;
-                        label5.Text = "Chromatic";
+                    else if (bScaleMode && iNotePlayed[0] == -1)
+                    {
+                        int changeUp = 0;
+                        int changeDown = 0;
+                        int nearestgoal;
+                        int nearestgoalUp = LatestNote % 12;
+                        int nearestgoalDown = nearestgoalUp;
+                        int goal;
+
+                        if (axis[2] < 32767)
+                            goal = GetScaleNote(5);
+                        else
+                            goal = GetScaleNote(6);
+
+                        while (goal > nearestgoalUp)
+                            nearestgoalUp += 12;
+                        while (nearestgoalUp != goal && nearestgoalUp != goal - 12)
+                        {
+                            changeUp--;
+                            nearestgoalUp--;
+                        }
+
+                        while (goal < nearestgoalDown)
+                            nearestgoalDown -= 12;
+
+                        while (nearestgoalDown != goal && nearestgoalDown != goal - 12)
+                        {
+                            changeDown++;
+                            nearestgoalDown++;
+                        }
+                        if (axis[1] == 32767)
+                        {
+                            if (~changeUp + 1 < changeDown)
+                            {
+                                nearestgoal = LatestNote + changeUp;
+                            }
+                            else
+                            {
+                                nearestgoal = LatestNote + changeDown;
+                            }
+                        }
+                        else if (bAscending)
+                        {
+                            nearestgoal = LatestNote + changeUp;
+                        }
+                        else
+                        {
+                            nearestgoal = LatestNote + changeDown;
+                        }
+
+                        while (nearestgoal < 0)
+                        {
+                            nearestgoal += 12;
+                            Octave--;
+                        }
+                        while (nearestgoal > 12)
+                        {
+                            nearestgoal -= 12;
+                            Octave++;
+                        }
+                        PreviousButton = LatestButton;
+                        LatestButton = 0;
+
+                        if (bNotePlaying[nearestgoal + Octave * 12] == true)
+                        {
+                            for (int i = 0; i < iNotePlayed.Length; i++)
+                            {
+                                if (iNotePlayed[i] == nearestgoal && iOctavePlayed[i] == Octave)
+                                {
+                                    bButtonIgnore[i] = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            PlayNote(nearestgoal);
+                        }
+                        iNotePlayed[0] = nearestgoal;
+                        iOctavePlayed[0] = Octave;
                     }
                     else if (bDrumMode && trip % iBassSpeed == 0 && iNotePlayed[0] == -1)
                     {
@@ -811,7 +918,6 @@ namespace GameControllerHack
                 {
                     StopNote(iNotePlayed[0], iOctavePlayed[0]);
                     iNotePlayed[0] = -1;
-                    bChromaOverride = false;
                     if (bScaleMode)
                         label5.Text = "";
                 }
@@ -821,42 +927,94 @@ namespace GameControllerHack
                     if (bChordMode)
                     {
                         StashCurrentChord();
-                        chordComboBox.Text = "V";
+                        if (axis[2] < 32767)
+                        {
+                            chordComboBox.Text = "III";
+                        }
+                        else
+                        {
+                            chordComboBox.Text = "V";
+                        }
                         GetRecentChord();
                     }
-                    else if (bScaleMode)
+                    else if (bScaleMode && iNotePlayed[1] == -1)
                     {
-                        int change = 0;
-                        int nearestgoal = LatestNote % 12;
-                        int goal = GetScaleNote(0);
+                        int changeUp = 0;
+                        int changeDown = 0;
+                        int nearestgoal;
+                        int nearestgoalUp = LatestNote % 12;
+                        int nearestgoalDown = nearestgoalUp;
+                        int goal;
 
-                        if (dpad[0] == 9000)
+                        if (axis[2] < 32767)
                             goal = GetScaleNote(4);
-                        else if (dpad[0] == 27000)
+                        else
                             goal = GetScaleNote(2);
 
-                        while (goal < nearestgoal)
-                            goal += 12;
-
-                        while (nearestgoal != goal && nearestgoal != goal - 12)
+                        while (goal > nearestgoalUp)
+                            nearestgoalUp += 12;
+                        while (nearestgoalUp != goal && nearestgoalUp != goal - 12)
                         {
-                            change++;
-                            nearestgoal++;
+                            changeUp--;
+                            nearestgoalUp--;
                         }
 
-                        if (nearestgoal != LatestNote)
+                        while (goal < nearestgoalDown)
+                            nearestgoalDown -= 12;
+
+                        while (nearestgoalDown != goal && nearestgoalDown != goal - 12)
                         {
-                            nearestgoal = LatestNote + change;
-                            if (LatestButton == 2 && LatestNote % 12 == nearestgoal % 12)
-                                Octave++;
-                            if (bNotePlaying[nearestgoal] == true)
-                                StopNote(nearestgoal, Octave);
-                            PreviousButton = LatestButton;
-                            LatestButton = 1;
+                            changeDown++;
+                            nearestgoalDown++;
+                        }
+                        if (axis[1] == 32767)
+                        {
+                            if (~changeUp + 1 < changeDown)
+                            {
+                                nearestgoal = LatestNote + changeUp;
+                            }
+                            else
+                            {
+                                nearestgoal = LatestNote + changeDown;
+                            }
+                        }
+                        else if (bAscending)
+                        {
+                            nearestgoal = LatestNote + changeUp;
+                        }
+                        else
+                        {
+                            nearestgoal = LatestNote + changeDown;
+                        }
+
+                        while (nearestgoal < 0)
+                        {
+                            nearestgoal += 12;
+                            Octave--;
+                        }
+                        while (nearestgoal > 12)
+                        {
+                            nearestgoal -= 12;
+                            Octave++;
+                        }
+                        PreviousButton = LatestButton;
+                        LatestButton = 1;
+                        if (bNotePlaying[nearestgoal + Octave * 12] == true)
+                        {
+                            for (int i = 0; i < iNotePlayed.Length; i++)
+                            {
+                                if (iNotePlayed[i] == nearestgoal && iOctavePlayed[i] == Octave)
+                                {
+                                    bButtonIgnore[i] = true;
+                                }
+                            }
+                        }
+                        else
+                        {
                             PlayNote(nearestgoal);
-                            iNotePlayed[1] = nearestgoal;
-                            iOctavePlayed[1] = Octave;
                         }
+                        iNotePlayed[1] = nearestgoal;
+                        iOctavePlayed[1] = Octave;
                     }
                     else if (bDrumMode && trip % iBassSpeed == 0 && iNotePlayed[1] == -1)
                     {
@@ -899,42 +1057,78 @@ namespace GameControllerHack
                     }
                     else if (bScaleMode && iNotePlayed[2] == -1)
                     {
-                        int change = 0;
-                        int nearestgoal = LatestNote % 12;
-                        int goal = GetScaleNote(0);
+                        int changeUp = 0;
+                        int changeDown = 0;
+                        int nearestgoal;
+                        int nearestgoalUp = LatestNote % 12;
+                        int nearestgoalDown = nearestgoalUp;
+                        int goal = 0;
 
-                        if (dpad[0] == 9000)
-                            goal = GetScaleNote(4);
-                        else if (dpad[0] == 27000)
-                            goal = GetScaleNote(2);
 
-                        while (goal > nearestgoal)
-                            nearestgoal += 12;
-
-                        while (nearestgoal != goal && nearestgoal != goal - 12)
+                        while (goal > nearestgoalUp)
+                            nearestgoalUp += 12;
+                        while (nearestgoalUp != goal && nearestgoalUp != goal - 12)
                         {
-                            change--;
-                            nearestgoal--;
+                            changeUp--;
+                            nearestgoalUp--;
                         }
 
-                        if (nearestgoal != LatestNote)
+                        while (goal < nearestgoalDown)
+                            nearestgoalDown -= 12;
+
+                        while (nearestgoalDown != goal && nearestgoalDown != goal - 12)
                         {
-                            if (LatestButton == 1 && LatestNote % 12 == nearestgoal % 12)
-                                Octave--;
-                            nearestgoal = LatestNote + change;
-                            if (nearestgoal < 0)
+                            changeDown++;
+                            nearestgoalDown++;
+                        }
+                        if (axis[1] == 32767)
+                        {
+                            if (~changeUp + 1 < changeDown)
                             {
-                                Octave--;
-                                nearestgoal += 12;
+                                nearestgoal = LatestNote + changeUp;
                             }
-                            if (bNotePlaying[nearestgoal] == true)
-                                StopNote(nearestgoal, Octave);
-                            PreviousButton = LatestButton;
-                            LatestButton = 2;
-                            PlayNote(nearestgoal);
-                            iNotePlayed[2] = nearestgoal;
-                            iOctavePlayed[2] = Octave;
+                            else
+                            {
+                                nearestgoal = LatestNote + changeDown;
+                            }
                         }
+                        else if (bAscending)
+                        {
+                            nearestgoal = LatestNote + changeUp;
+                        }
+                        else
+                        {
+                            nearestgoal = LatestNote + changeDown;
+                        }
+
+                        while (nearestgoal < 0)
+                        {
+                            nearestgoal += 12;
+                            Octave--;
+                        }
+                        while (nearestgoal > 12)
+                        {
+                            nearestgoal -= 12;
+                            Octave++;
+                        }
+                        PreviousButton = LatestButton;
+                        LatestButton = 2;
+                        if (bNotePlaying[nearestgoal + Octave * 12] == true)
+                        {
+                            for (int i = 0; i < iNotePlayed.Length; i++)
+                            {
+                                if (iNotePlayed[i] == nearestgoal && iOctavePlayed[i] == Octave)
+                                {
+                                    bButtonIgnore[i] = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            PlayNote(nearestgoal);
+                        }
+                        iNotePlayed[2] = nearestgoal;
+                        iOctavePlayed[2] = Octave;
                     }
                     else if (bDrumMode && sixteenth % iBassSpeed == 0 && iNotePlayed[2] == -1)
                     {
@@ -973,14 +1167,99 @@ namespace GameControllerHack
                     iNotePlayed[2] = -1;
                 }
 
-
                 if (buttons[3] == 128)
                 {
                     if (bChordMode)
                     {
                         StashCurrentChord();
-                        chordComboBox.Text = "IV";
+                        if (axis[2] < 32767)
+                        {
+                            chordComboBox.Text = "II";
+                        }
+                        else
+                        {
+                            chordComboBox.Text = "IV";
+                        }
                         GetRecentChord();
+                    }
+                    else if (bScaleMode && iNotePlayed[3] == -1)
+                    {
+                        int changeUp = 0;
+                        int changeDown = 0;
+                        int nearestgoal;
+                        int nearestgoalUp = LatestNote % 12;
+                        int nearestgoalDown = nearestgoalUp;
+                        int goal;
+
+                        if (axis[2] < 32767)
+                            goal = GetScaleNote(1);
+                        else
+                            goal = GetScaleNote(3);
+
+                        while (goal > nearestgoalUp)
+                            nearestgoalUp += 12;
+                        while (nearestgoalUp != goal && nearestgoalUp != goal - 12)
+                        {
+                            changeUp--;
+                            nearestgoalUp--;
+                        }
+
+                        while (goal < nearestgoalDown)
+                            nearestgoalDown -= 12;
+
+                        while (nearestgoalDown != goal && nearestgoalDown != goal - 12)
+                        {
+                            changeDown++;
+                            nearestgoalDown++;
+                        }
+                        if (axis[1] == 32767)
+                        {
+                            if (~changeUp + 1 < changeDown)
+                            {
+                                nearestgoal = LatestNote + changeUp;
+                            }
+                            else
+                            {
+                                nearestgoal = LatestNote + changeDown;
+                            }
+                        }
+                        else if (bAscending)
+                        {
+                            nearestgoal = LatestNote + changeUp;
+                        }
+                        else
+                        {
+                            nearestgoal = LatestNote + changeDown;
+                        }
+
+                        while (nearestgoal < 0)
+                        {
+                            nearestgoal += 12;
+                            Octave--;
+                        }
+                        while (nearestgoal > 12)
+                        {
+                            nearestgoal -= 12;
+                            Octave++;
+                        }
+                        PreviousButton = LatestButton;
+                        LatestButton = 3;
+                        if (bNotePlaying[nearestgoal + Octave * 12] == true)
+                        {
+                            for (int i = 0; i < iNotePlayed.Length; i++)
+                            {
+                                if (iNotePlayed[i] == nearestgoal && iOctavePlayed[i] == Octave)
+                                {
+                                    bButtonIgnore[i] = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            PlayNote(nearestgoal);
+                        }
+                        iNotePlayed[3] = nearestgoal;
+                        iOctavePlayed[3] = Octave;
                     }
                     else if (bDrumMode && sixteenth % iBassSpeed == 0 && iNotePlayed[3] == -1)
                     {
@@ -1025,6 +1304,14 @@ namespace GameControllerHack
                     {
                         note = chordModeNotesActive[0];
                         PlayNote(note);
+                        if (axis[1] < 32511)
+                        {
+                            PlayNote(note - 12);
+                        }
+                        if (axis[1] > 32800)
+                        {
+                            PlayNote(note + 12);
+                        }
                     }
                     else if (bScaleMode)
                     {
@@ -1042,7 +1329,7 @@ namespace GameControllerHack
                     }
                     else if (bDrumMode && iNotePlayed[4] == -1)
                     {
-                        note = 0;
+                        note = 2;
                         iPendingNotes[4] = note;
                     }
                     iNotePlayed[4] = note;
@@ -1053,8 +1340,16 @@ namespace GameControllerHack
                 }
                 if ((buttons[4] == 0) && (iNotePlayed[4] != -1))
                 {
-                    StopNote(iNotePlayed[4], iOctavePlayed[4]);
-
+                    if (bButtonIgnore[4])
+                    {
+                        bButtonIgnore[4] = false;
+                    }
+                    else
+                    {
+                        StopNote(iNotePlayed[4], iOctavePlayed[4]);
+                        StopNote(iNotePlayed[4] - 12, iOctavePlayed[4]);
+                        StopNote(iNotePlayed[4] + 12, iOctavePlayed[4]);
+                    }
                     iNotePlayed[4] = -1;
                 }
 
@@ -1081,7 +1376,7 @@ namespace GameControllerHack
                     }
                     else if (bDrumMode && iNotePlayed[5] == -1)
                     {
-                        note = 2;
+                        note = 0;
                         iPendingNotes[5] = note;
                     }
 
@@ -1092,8 +1387,14 @@ namespace GameControllerHack
                 }
                 if ((buttons[5] == 0) && (iNotePlayed[5] != -1))
                 {
-                    StopNote(iNotePlayed[5], iOctavePlayed[5]);
-
+                    if (bButtonIgnore[5])
+                    {
+                        bButtonIgnore[5] = false;
+                    }
+                    else
+                    {
+                        StopNote(iNotePlayed[5], iOctavePlayed[5]);
+                    }
                     iNotePlayed[5] = -1;
                 }
 
@@ -1121,6 +1422,9 @@ namespace GameControllerHack
                     else if (bDrumMode &&  iNotePlayed[6] == -1)
                     {
                         note = 16;
+                        if (axis[0] == 0)
+                            note = 2;
+
                         iPendingNotes[6] = note;
                     }
 
@@ -1132,8 +1436,14 @@ namespace GameControllerHack
                 }
                 if ((buttons[6] == 0) && (iNotePlayed[6] != -1))
                 {
-                    StopNote(iNotePlayed[6], iOctavePlayed[6]);
-
+                    if (bButtonIgnore[6])
+                    {
+                        bButtonIgnore[6] = false;
+                    }
+                    else
+                    {
+                        StopNote(iNotePlayed[6], iOctavePlayed[6]);
+                    }
                     iNotePlayed[6] = -1;
                 }
                 if ((buttons[7] == 128) && (iNotePlayed[7] == -1))
@@ -1160,6 +1470,8 @@ namespace GameControllerHack
                     else if (bDrumMode && iNotePlayed[7] == -1)
                     {
                         note = 13;
+                        if (axis[0] == 0)
+                            note = 0;
                         iPendingNotes[7] = note;
                     }
 
@@ -1170,8 +1482,14 @@ namespace GameControllerHack
                 }
                 if ((buttons[7] == 0) && (iNotePlayed[7] != -1))
                 {
-                    StopNote(iNotePlayed[7], iOctavePlayed[7]);
-
+                    if (bButtonIgnore[7])
+                    {
+                        bButtonIgnore[7] = false;
+                    }
+                    else
+                    {
+                        StopNote(iNotePlayed[7], iOctavePlayed[7]);
+                    }
                     iNotePlayed[7] = -1;
                 }
                 if ((bChordMode) && (buttons[10] != 128))
@@ -1415,75 +1733,82 @@ namespace GameControllerHack
         }
         private void RefreshChords()
         {
-
-                if (bMajor)
-                {
-                    //vi
-                    chordModeNotesVI[0] = 9 + 48;
-                    chordModeNotesVI[1] = 12 + 48;
-                    chordModeNotesVI[2] = 16 + 48;
-                    chordModeNotesVI[3] = 19 + 48;
-                }
-                else
-                {
-                    //VI
-                    chordModeNotesVI[0] = 8 + 48;
-                    chordModeNotesVI[1] = 12 + 48;
-                    chordModeNotesVI[2] = 15 + 48;
-                    chordModeNotesVI[3] = 19 + 48;
-                }
-
-                if (bMajor)
-                {
-                    //IV
-                    chordModeNotesIV[0] = 5 + 48;
-                    chordModeNotesIV[1] = 9 + 48;
-                    chordModeNotesIV[2] = 12 + 48;
-                    chordModeNotesIV[3] = 16 + 48;
-                }
-                else
-                {
-                    //iv
-                    chordModeNotesIV[0] = 5 + 48;
-                    chordModeNotesIV[1] = 8 + 48;
-                    chordModeNotesIV[2] = 12 + 48;
-                    chordModeNotesIV[3] = 15 + 48;
-                }
-
-                if (bMajor)
-                {
-                    //I
-                    chordModeNotesI[0] = 0 + 48;
-                    chordModeNotesI[1] = 4 + 48;
-                    chordModeNotesI[2] = 7 + 48;
-                    chordModeNotesI[3] = 11 + 48;
-                }
-                else
-                {
-                    //i
-                    chordModeNotesI[0] = 0 + 48;
-                    chordModeNotesI[1] = 3 + 48;
-                    chordModeNotesI[2] = 7 + 48;
-                    chordModeNotesI[3] = 10 + 48;
-                }
-
-                if (bMajor)
-                {
-                    //V
-                    chordModeNotesV[0] = 7 + 48;
-                    chordModeNotesV[1] = 11 + 48;
-                    chordModeNotesV[2] = 14 + 48;
-                    chordModeNotesV[3] = 17 + 48;
-                }
-                else
-                {
-                    //v
-                    chordModeNotesV[0] = 7 + 48;
-                    chordModeNotesV[1] = 10 + 48;
-                    chordModeNotesV[2] = 14 + 48;
-                    chordModeNotesV[3] = 17 + 48;
-                }
-            
+            if (bMajor)
+            {
+                //I
+                chordModeNotesI[0] = 0 + 48;
+                chordModeNotesI[1] = 4 + 48;
+                chordModeNotesI[2] = 7 + 48;
+                chordModeNotesI[3] = 11 + 48;
+                //II
+                chordModeNotesII[0] = 2 + 48;
+                chordModeNotesII[1] = 5 + 48;
+                chordModeNotesII[2] = 9 + 48;
+                chordModeNotesII[3] = 12 + 48;
+                //III
+                chordModeNotesIII[0] = 4 + 48;
+                chordModeNotesIII[1] = 7 + 48;
+                chordModeNotesIII[2] = 11 + 48;
+                chordModeNotesIII[3] = 14 + 48;
+                //IV
+                chordModeNotesIV[0] = 5 + 48;
+                chordModeNotesIV[1] = 9 + 48;
+                chordModeNotesIV[2] = 12 + 48;
+                chordModeNotesIV[3] = 16 + 48;
+                //V
+                chordModeNotesV[0] = 7 + 48;
+                chordModeNotesV[1] = 11 + 48;
+                chordModeNotesV[2] = 14 + 48;
+                chordModeNotesV[3] = 17 + 48;
+                //VI
+                chordModeNotesVI[0] = 9 + 48;
+                chordModeNotesVI[1] = 12 + 48;
+                chordModeNotesVI[2] = 16 + 48;
+                chordModeNotesVI[3] = 19 + 48;
+                //VII
+                chordModeNotesVII[0] = 11 + 48;
+                chordModeNotesVII[1] = 14 + 48;
+                chordModeNotesVII[2] = 17 + 48;
+                chordModeNotesVII[3] = 21 + 48;
+            }
+            else //Minor Scale
+            {
+                //I
+                chordModeNotesI[0] = 0 + 48;
+                chordModeNotesI[1] = 3 + 48;
+                chordModeNotesI[2] = 7 + 48;
+                chordModeNotesI[3] = 10 + 48;
+                //II
+                chordModeNotesII[0] = 2 + 48;
+                chordModeNotesII[1] = 5 + 48;
+                chordModeNotesII[2] = 8 + 48;
+                chordModeNotesII[3] = 12 + 48;
+                //III
+                chordModeNotesIII[0] = 3 + 48;
+                chordModeNotesIII[1] = 7 + 48;
+                chordModeNotesIII[2] = 10 + 48;
+                chordModeNotesIII[3] = 14 + 48;
+                //IV
+                chordModeNotesIV[0] = 5 + 48;
+                chordModeNotesIV[1] = 8 + 48;
+                chordModeNotesIV[2] = 12 + 48;
+                chordModeNotesIV[3] = 15 + 48;
+                //V
+                chordModeNotesV[0] = 7 + 48;
+                chordModeNotesV[1] = 10 + 48;
+                chordModeNotesV[2] = 14 + 48;
+                chordModeNotesV[3] = 17 + 48;
+                //VI
+                chordModeNotesVI[0] = 8 + 48;
+                chordModeNotesVI[1] = 12 + 48;
+                chordModeNotesVI[2] = 15 + 48;
+                chordModeNotesVI[3] = 19 + 48;
+                //VII
+                chordModeNotesVII[0] = 10 + 48;
+                chordModeNotesVII[1] = 14 + 48;
+                chordModeNotesVII[2] = 17 + 48;
+                chordModeNotesVII[3] = 20 + 48;
+            }
         }
         private void StashCurrentChord()
         {
@@ -1494,11 +1819,32 @@ namespace GameControllerHack
                     chordModeNotesI[i] = chordModeNotesActive[i];
                 }
             }
+            if (chordComboBox.Text == "II")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesII[i] = chordModeNotesActive[i];
+                }
+            }
+            if (chordComboBox.Text == "III")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesIII[i] = chordModeNotesActive[i];
+                }
+            }
             if (chordComboBox.Text == "IV")
             {
                 for (int i = 0; i < chordModeNotesActive.Length; i++)
                 {
                     chordModeNotesIV[i] = chordModeNotesActive[i];
+                }
+            }
+            if (chordComboBox.Text == "V")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesV[i] = chordModeNotesActive[i];
                 }
             }
             if (chordComboBox.Text == "VI")
@@ -1508,11 +1854,11 @@ namespace GameControllerHack
                     chordModeNotesVI[i] = chordModeNotesActive[i];
                 }
             }
-            if (chordComboBox.Text == "V")
+            if (chordComboBox.Text == "VII")
             {
                 for (int i = 0; i < chordModeNotesActive.Length; i++)
                 {
-                    chordModeNotesV[i] = chordModeNotesActive[i];
+                    chordModeNotesVII[i] = chordModeNotesActive[i];
                 }
             }
         }
@@ -1526,11 +1872,32 @@ namespace GameControllerHack
                     chordModeNotesActive[i] = chordModeNotesI[i];
                 }
             }
+            if (chordComboBox.Text == "II")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesActive[i] = chordModeNotesII[i];
+                }
+            }
+            if (chordComboBox.Text == "III")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesActive[i] = chordModeNotesIII[i];
+                }
+            }
             if (chordComboBox.Text == "IV")
             {
                 for (int i = 0; i < chordModeNotesActive.Length; i++)
                 {
                     chordModeNotesActive[i] = chordModeNotesIV[i];
+                }
+            }
+            if (chordComboBox.Text == "V")
+            {
+                for (int i = 0; i < chordModeNotesActive.Length; i++)
+                {
+                    chordModeNotesActive[i] = chordModeNotesV[i];
                 }
             }
             if (chordComboBox.Text == "VI")
@@ -1540,11 +1907,11 @@ namespace GameControllerHack
                     chordModeNotesActive[i] = chordModeNotesVI[i];
                 }
             }
-            if (chordComboBox.Text == "V")
+            if (chordComboBox.Text == "VII")
             {
                 for (int i = 0; i < chordModeNotesActive.Length; i++)
                 {
-                    chordModeNotesActive[i] = chordModeNotesV[i];
+                    chordModeNotesActive[i] = chordModeNotesVII[i];
                 }
             }
         }
@@ -1587,14 +1954,14 @@ namespace GameControllerHack
             Properties.Settings.Default.Save();
         }
 
-        private void inputComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         public static int Clamp(int value, int min, int max)
         {
             return (value < min) ? min : (value > max) ? max : value;
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

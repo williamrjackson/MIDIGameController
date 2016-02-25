@@ -85,5 +85,156 @@
             Array of buttons availiable on the joystick. This also includes PoV hats.
             </summary>
         </member>
+        <member name="T:Multimedia.TimerMode">
+            <summary>
+            Defines constants for the multimedia Timer's event types.
+            </summary>
+        </member>
+        <member name="F:Multimedia.TimerMode.OneShot">
+            <summary>
+            Timer event occurs once.
+            </summary>
+        </member>
+        <member name="F:Multimedia.TimerMode.Periodic">
+            <summary>
+            Timer event occurs periodically.
+            </summary>
+        </member>
+        <member name="T:Multimedia.TimerCaps">
+            <summary>
+            Represents information about the multimedia Timer's capabilities.
+            </summary>
+        </member>
+        <member name="F:Multimedia.TimerCaps.periodMin">
+            <summary>
+            Minimum supported period in milliseconds.
+            </summary>
+        </member>
+        <member name="F:Multimedia.TimerCaps.periodMax">
+            <summary>
+            Maximum supported period in milliseconds.
+            </summary>
+        </member>
+        <member name="T:Multimedia.Timer">
+            <summary>
+            Represents the Windows multimedia timer.
+            </summary>
+        </member>
+        <member name="M:Multimedia.Timer.#cctor">
+            <summary>
+            Initialize class.
+            </summary>
+        </member>
+        <member name="M:Multimedia.Timer.#ctor(System.ComponentModel.IContainer)">
+            <summary>
+            Initializes a new instance of the Timer class with the specified IContainer.
+            </summary>
+            <param name="container">
+            The IContainer to which the Timer will add itself.
+            </param>
+        </member>
+        <member name="M:Multimedia.Timer.#ctor">
+            <summary>
+            Initializes a new instance of the Timer class.
+            </summary>
+        </member>
+        <member name="M:Multimedia.Timer.Start">
+            <summary>
+            Starts the timer.
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+            The timer has already been disposed.
+            </exception>
+            <exception cref="T:Multimedia.TimerStartException">
+            The timer failed to start.
+            </exception>
+        </member>
+        <member name="M:Multimedia.Timer.Stop">
+            <summary>
+            Stops timer.
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+            If the timer has already been disposed.
+            </exception>
+        </member>
+        <member name="M:Multimedia.Timer.Dispose">
+            <summary>
+            Frees timer resources.
+            </summary>
+        </member>
+        <member name="E:Multimedia.Timer.Started">
+            <summary>
+            Occurs when the Timer has started;
+            </summary>
+        </member>
+        <member name="E:Multimedia.Timer.Stopped">
+            <summary>
+            Occurs when the Timer has stopped;
+            </summary>
+        </member>
+        <member name="E:Multimedia.Timer.Tick">
+            <summary>
+            Occurs when the time period has elapsed.
+            </summary>
+        </member>
+        <member name="P:Multimedia.Timer.SynchronizingObject">
+            <summary>
+            Gets or sets the object used to marshal event-handler calls.
+            </summary>
+        </member>
+        <member name="P:Multimedia.Timer.Period">
+            <summary>
+            Gets or sets the time between Tick events.
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+            If the timer has already been disposed.
+            </exception>   
+        </member>
+        <member name="P:Multimedia.Timer.Resolution">
+            <summary>
+            Gets or sets the timer resolution.
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+            If the timer has already been disposed.
+            </exception>        
+            <remarks>
+            The resolution is in milliseconds. The resolution increases 
+            with smaller values; a resolution of 0 indicates periodic events 
+            should occur with the greatest possible accuracy. To reduce system 
+            overhead, however, you should use the maximum value appropriate 
+            for your application.
+            </remarks>
+        </member>
+        <member name="P:Multimedia.Timer.Mode">
+            <summary>
+            Gets the timer mode.
+            </summary>
+            <exception cref="T:System.ObjectDisposedException">
+            If the timer has already been disposed.
+            </exception>
+        </member>
+        <member name="P:Multimedia.Timer.IsRunning">
+            <summary>
+            Gets a value indicating whether the Timer is running.
+            </summary>
+        </member>
+        <member name="P:Multimedia.Timer.Capabilities">
+            <summary>
+            Gets the timer capabilities.
+            </summary>
+        </member>
+        <member name="T:Multimedia.TimerStartException">
+            <summary>
+            The exception that is thrown when a timer fails to start.
+            </summary>
+        </member>
+        <member name="M:Multimedia.TimerStartException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the TimerStartException class.
+            </summary>
+            <param name="message">
+            The error message that explains the reason for the exception. 
+            </param>
+        </member>
     </members>
 </doc>
