@@ -1,0 +1,12 @@
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\Release\Sanford.Multimedia.Midi.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\Release\Sanford.Collections.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\Release\Sanford.Multimedia.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\Release\Sanford.Multimedia.Timers.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\Release\Sanford.Threading.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.csprojResolveAssemblyReference.cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.UI.DeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.UI.InputDeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.UI.OutputDeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.UI.PianoControlDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.csproj.GenerateResource.Cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\Release\Sanford.Multimedia.Midi.dll

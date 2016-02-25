@@ -1,0 +1,12 @@
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\Debug\JoystickInterface.XML
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\Debug\JoystickInterface.dll
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\Debug\JoystickInterface.pdb
+C:\Repositories\JoyToNoteResearch\JoystickInterface\obj\Debug\JoystickInterface.csprojResolveAssemblyReference.cache
+C:\Repositories\JoyToNoteResearch\JoystickInterface\obj\Debug\JoystickInterface.dll
+C:\Repositories\JoyToNoteResearch\JoystickInterface\obj\Debug\JoystickInterface.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\Debug\JoystickInterface.XML
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\Debug\JoystickInterface.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\Debug\JoystickInterface.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\obj\Debug\JoystickInterface.csprojResolveAssemblyReference.cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\obj\Debug\JoystickInterface.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\obj\Debug\JoystickInterface.pdb

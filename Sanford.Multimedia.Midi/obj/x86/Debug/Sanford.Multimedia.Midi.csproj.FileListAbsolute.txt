@@ -1,0 +1,28 @@
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Midi.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Midi.pdb
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Collections.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Timers.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Threading.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.csprojResolveAssemblyReference.cache
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.DeviceDialog.resources
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.InputDeviceDialog.resources
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.OutputDeviceDialog.resources
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.PianoControlDialog.resources
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.csproj.GenerateResource.Cache
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.dll
+C:\Repositories\SONARVoiceRecPrototype\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Midi.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Midi.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Collections.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Multimedia.Timers.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\bin\x86\Debug\Sanford.Threading.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.csprojResolveAssemblyReference.cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.DeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.InputDeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.OutputDeviceDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.UI.PianoControlDialog.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.csproj.GenerateResource.Cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\Sanford.Multimedia.Midi\obj\x86\Debug\Sanford.Multimedia.Midi.pdb

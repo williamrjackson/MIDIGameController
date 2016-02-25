@@ -1,0 +1,5 @@
+C:\Repositories\SONARVoiceRecPrototype\JoystickInterface\bin\x86\Release\JoystickInterface.dll
+C:\Repositories\SONARVoiceRecPrototype\JoystickInterface\bin\x86\Release\JoystickInterface.pdb
+C:\Repositories\SONARVoiceRecPrototype\JoystickInterface\bin\x86\Release\JoystickInterface.XML
+C:\Repositories\SONARVoiceRecPrototype\JoystickInterface\obj\x86\Release\JoystickInterface.dll
+C:\Repositories\SONARVoiceRecPrototype\JoystickInterface\obj\x86\Release\JoystickInterface.pdb

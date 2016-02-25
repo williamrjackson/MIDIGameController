@@ -1,0 +1,17 @@
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\GameControllerHack.exe.config
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\GameControllerHack.exe
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\GameControllerHack.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\JoystickInterface.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\Sanford.Collections.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\Sanford.Multimedia.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\Sanford.Multimedia.Midi.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\Sanford.Multimedia.Timers.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\Sanford.Threading.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\JoystickInterface.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\bin\Release\JoystickInterface.xml
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.csprojResolveAssemblyReference.cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.Form1.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.Properties.Resources.resources
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.csproj.GenerateResource.Cache
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.exe
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\GameControllerHack\obj\Release\GameControllerHack.pdb

@@ -1,0 +1,10 @@
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\x86\Debug\JoystickInterface.dll
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\x86\Debug\JoystickInterface.pdb
+C:\Repositories\JoyToNoteResearch\JoystickInterface\bin\x86\Debug\JoystickInterface.XML
+C:\Repositories\JoyToNoteResearch\JoystickInterface\obj\x86\Debug\JoystickInterface.dll
+C:\Repositories\JoyToNoteResearch\JoystickInterface\obj\x86\Debug\JoystickInterface.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\x86\Debug\JoystickInterface.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\x86\Debug\JoystickInterface.pdb
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\bin\x86\Debug\JoystickInterface.XML
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\obj\x86\Debug\JoystickInterface.dll
+C:\Users\bjackson\Documents\Visual Studio 2013\Projects\GameControllerHack\JoystickInterface\obj\x86\Debug\JoystickInterface.pdb
